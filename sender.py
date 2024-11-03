@@ -11,6 +11,7 @@ def capture_and_send_screenshot(host: str, port: int = 12345):
         host (str): The IP address of the receiving computer
         port (int): The port number to use (default: 12345)
     """
+    sock = None
     try:
         # Capture the screenshot
         screenshot = ImageGrab.grab()
@@ -35,7 +36,8 @@ def capture_and_send_screenshot(host: str, port: int = 12345):
     except Exception as e:
         print(f"Error sending screenshot: {e}")
     finally:
-        sock.close()
+        if sock:
+            sock.close()
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(description="Send screenshot to remote computer")
