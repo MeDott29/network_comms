@@ -4,6 +4,7 @@ import PIL.ImageGrab
 import io
 import argparse
 from screeninfo import get_monitors
+from pyvirtualdisplay import Display
 import mss
 import struct
 
@@ -25,7 +26,8 @@ def capture_and_send_screenshot(host: str, port: int = 12345):
     try:
         # Create TCP socket and connect
         sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-        sock.connect((host, port))
+        with Display():
+            sock.connect((host, port))
         
         # Use mss to capture all monitors
         with mss.mss() as sct:
