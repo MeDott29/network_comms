@@ -1,5 +1,5 @@
 import socket
-import PIL.ImageGrab
+import pyscreenshot as ImageGrab
 import io
 import argparse
 
@@ -13,7 +13,7 @@ def capture_and_send_screenshot(host: str, port: int = 12345):
     """
     try:
         # Capture the screenshot
-        screenshot = PIL.ImageGrab.grab()
+        screenshot = ImageGrab.grab()
 
         # Convert image to bytes
         img_byte_arr = io.BytesIO()
