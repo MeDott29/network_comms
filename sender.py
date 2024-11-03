@@ -13,16 +13,16 @@ def capture_and_send_screenshot(host: str, port: int = 12345):
     """
     sock = None
     try:
-        # Capture the screenshot
-        screenshot = ImageGrab.grab()
+        n = 0
+        for monitor in ImageGrab.grab_to_file(f"screenshot-{n}.png", is_monitor=1):
+            n += 1
 
-        # Convert image to bytes
-        img_byte_arr = io.BytesIO()
-        screenshot.save(img_byte_arr, format='PNG')
-        img_byte_arr = img_byte_arr.getvalue()
+            # Convert image to bytes
+            with open(f"screenshot-{n}.png", "rb") as f:
+                img_byte_arr = f.read()
 
-        # Create TCP socket and connect
-        sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+            # Create TCP socket and connect
+            sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
         sock.connect((host, port))
 
         # Send the size of the image first
@@ -31,7 +31,7 @@ def capture_and_send_screenshot(host: str, port: int = 12345):
 
         # Send the image data
         sock.sendall(img_byte_arr)
-        print(f"Screenshot sent successfully to {host}:{port}")
+            print(f"Screenshot {n} sent successfully to {host}:{port}")
 
     except Exception as e:
         print(f"Error sending screenshot: {e}")
